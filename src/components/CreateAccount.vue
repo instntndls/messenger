@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import GoogleIcon from '@/components/icons/GoogleIcon.vue'
 import { ref } from 'vue'
+import { supabase } from '@/clients/supabase'
 
 const email = ref('')
 const password = ref('')
@@ -26,7 +27,16 @@ const toggleShowPassword = () => {
 }
 
 const createAccount = async () => {
-  console.log(email.value + ' ' + password.value)
+  const { data, error } = await supabase.auth.signUp({
+    email: email.value,
+    password: password.value
+  })
+  if (error) {
+    console.log(error)
+  }
+  else {
+    console.log(data)
+  }
 }
 </script>
 
@@ -41,23 +51,23 @@ const createAccount = async () => {
       </CardDescription>
     </CardHeader>
     <CardContent class="space-y-3 flex flex-col">
-      <div class="grid grid-cols-2 gap-6">
-        <Button variant="outline">
-          <GithubIcon class=" pr-2"/>
-          Github
-        </Button>
-        <Button variant="outline">
-          <GoogleIcon/>
-          Google
-        </Button>
-      </div>
-      <div class="relative">
-        <div class="relative flex justify-center text-xs uppercase">
-          <span class="px-2 text-muted-foreground">
-            Or continue with
-          </span>
-        </div>
-      </div>
+<!--      <div class="grid grid-cols-2 gap-6">-->
+<!--        <Button variant="outline">-->
+<!--          <GithubIcon class=" pr-2"/>-->
+<!--          Github-->
+<!--        </Button>-->
+<!--        <Button variant="outline">-->
+<!--          <GoogleIcon/>-->
+<!--          Google-->
+<!--        </Button>-->
+<!--      </div>-->
+<!--      <div class="relative">-->
+<!--        <div class="relative flex justify-center text-xs uppercase">-->
+<!--          <span class="px-2 text-muted-foreground">-->
+<!--            Or continue with-->
+<!--          </span>-->
+<!--        </div>-->
+<!--      </div>-->
       <div class="grid gap-3">
         <Label for="email">Email</Label>
         <Input id="email" type="email" placeholder="m@example.com" v-model="email"/>

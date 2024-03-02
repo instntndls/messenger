@@ -1,21 +1,50 @@
 <script setup lang="ts">
 
 import Backdrop from '@/components/Backdrop.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted, provide, ref } from 'vue'
 
 import { Button } from '@/components/ui/button'
 import LoginDialog from '@/components/LoginDialog.vue'
 import { LucideArrowRight } from 'lucide-vue-next'
 import { PlusIcon  } from 'lucide-vue-next'
 import { EqualIcon } from 'lucide-vue-next'
+import { supabase } from '@/clients/supabase'
+import router from '@/router'
 
 const smoothIn = ref(false)
+
+const currentUser = ref()
+
+const seeCurrentUser = async () => {
+  const { data, error } = await supabase.auth.getSession()
+  if (error) {
+    currentUser.value = null
+  }
+  else {
+    currentUser.value = data.session?.user
+    console.log(currentUser.value)
+  }
+}
+
+const checkAuth = async () => {
+  console.log('checkAuth')
+  await seeCurrentUser()
+  if (currentUser.value) {
+    await router.push('/app')
+  }
+  else {
+    await router.push('/')
+  }
+}
 
 onMounted(() => {
   setTimeout(() => {
     smoothIn.value = true
   })
+  checkAuth()
 })
+
+provide('checkAuth', checkAuth)
 </script>
 
 <template>
