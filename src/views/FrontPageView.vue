@@ -1,43 +1,59 @@
 <script setup lang="ts">
 
 import Backdrop from '@/components/Backdrop.vue'
-import LoginCard from '@/components/LoginCard.vue'
 import { onMounted, ref } from 'vue'
+
+import { Button } from '@/components/ui/button'
+import LoginDialog from '@/components/LoginDialog.vue'
+import { LucideArrowRight } from 'lucide-vue-next'
+import { PlusIcon  } from 'lucide-vue-next'
+import { EqualIcon } from 'lucide-vue-next'
 
 const smoothIn = ref(false)
 
 onMounted(() => {
   setTimeout(() => {
     smoothIn.value = true
-  }, 10)
+  })
 })
 </script>
 
 <template>
   <Backdrop/>
   <transition>
-    <div v-if="smoothIn" class="absolute top-0 left-0 w-screen h-screen flex z-[2]">
-      <div class="flex w-full h-full justify-center items-center">
-        <div class="text-white text-5xl font-bold  flex flex-col gap-6 pb-48 px-12">
-          <p>
-            Vue3 X shadcn-vue <br> messenger
-          </p>
-          <span class="text-white text-opacity-70 text-3xl font-normal break-words">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </span>
-        </div>
+    <div v-if="smoothIn" class="Main">
+      <h1 class="text-4xl text-white font-black leading-relaxed">
+        Vue3 Messenger
+      </h1>
+      <div class="flex gap-3 h-8 items-center justify-center">
+        <img class="size-8 rounded-md" src="@/components/icons/VueLogo.png" alt="vuelogo">
+        <PlusIcon/>
+        <img class="size-8 rounded-md" src="@/components/icons/shadcnLogo.png" alt="shadcnlogo">
+        <PlusIcon/>
+        <img class="size-8 rounded-md" src="@/components/icons/supabaseLogo.png" alt="supabaselogo">
+        <EqualIcon/>
+        <p class="text-3xl">💖</p>
       </div>
-      <div class="bg-white w-full h-full bg-opacity-10 flex justify-center items-center">
-        <LoginCard class="w-96"/>
-      </div>
+      <p class="opacity-80">Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+      <login-dialog>
+        <Button class="flex gap-2">
+          Get started
+          <LucideArrowRight class="size-6"/>
+        </Button>
+      </login-dialog>
     </div>
   </transition>
 </template>
 
 <style scoped>
+.Main {
+  @apply absolute top-0 left-0 z-10 w-screen h-screen flex flex-col items-center justify-center text-center gap-6
+}
+
+
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 0.8s ;
+  transition: opacity 0.8s;
 }
 
 .v-enter-from,
