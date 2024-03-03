@@ -47,7 +47,7 @@ const createAccount = async () => {
     email: email.value,
     password: password.value,
     options: {
-      emailRedirectTo: window.location.origin + '/messenger/app/'
+      emailRedirectTo: window.location.origin + '/messenger'
     }
   })
   if (error) {
