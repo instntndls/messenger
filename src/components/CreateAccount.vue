@@ -47,7 +47,7 @@ const createAccount = async () => {
     email: email.value,
     password: password.value,
     options: {
-      emailRedirectTo: window.location.origin,
+      emailRedirectTo: 'https://instntndls.github.io/messenger/',
     }
   })
   if (error) {
