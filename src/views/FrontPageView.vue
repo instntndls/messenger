@@ -52,7 +52,7 @@ provide('checkAuth', checkAuth)
   <Backdrop />
   <transition>
     <div v-if="smoothIn" class="Main">
-      <div class="Title flex flex-col items-center gap-8 h-5/6 justify-center">
+      <div class="Title flex flex-col items-center gap-8 h-[92%] justify-center">
         <h1 class="text-4xl text-white font-black leading-relaxed">
           Vue3 Messenger
         </h1>
@@ -72,7 +72,7 @@ provide('checkAuth', checkAuth)
           </Button>
         </login-dialog>
       </div>
-      <div class="Footer flex flex-col justify-center items-center h-1/6 bg-black bg-opacity-50">
+      <div class="Footer flex flex-col justify-center items-center h-[8%] bg-black bg-opacity-50">
         <div class="text-md">
           Made with ❤️ by
           <HoverCard>
