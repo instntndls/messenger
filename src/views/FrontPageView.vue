@@ -52,7 +52,7 @@ provide('checkAuth', checkAuth)
   <Backdrop />
   <transition>
     <div v-if="smoothIn" class="Main">
-      <div class="Title flex flex-col items-center gap-8 h-[92%] justify-center">
+      <div class="Title flex flex-col items-center gap-8 h-[90%] justify-center">
         <h1 class="text-4xl text-white font-black leading-relaxed">
           Vue3 Messenger
         </h1>
@@ -72,8 +72,8 @@ provide('checkAuth', checkAuth)
           </Button>
         </login-dialog>
       </div>
-      <div class="Footer flex flex-col justify-center items-center h-[8%] bg-black bg-opacity-50">
-        <div class="text-md">
+      <div class="Footer flex flex-col justify-center items-center h-[10%] bg-black bg-opacity-30">
+        <div class="text-md opacity-80">
           Made with ❤️ by
           <HoverCard>
             <HoverCardTrigger as-child>
@@ -81,7 +81,6 @@ provide('checkAuth', checkAuth)
                 <a href="https://github.com/instntndls">
                   @instntndls
                 </a>
-
               </Button>
             </HoverCardTrigger>
             <HoverCardContent class="w-80">
@@ -107,6 +106,12 @@ provide('checkAuth', checkAuth)
               </div>
             </HoverCardContent>
           </HoverCard>
+        </div>
+        <div class="flex text-sm opacity-80">
+          Backdrop by
+          <Button variant="link" class="text-md -m-2.5">
+          <a href="https://ericaofanderson.tumblr.com/"> Erica Anderson </a>
+          </Button>
         </div>
       </div>
 
