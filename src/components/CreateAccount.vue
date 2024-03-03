@@ -45,7 +45,10 @@ const createAccount = async () => {
   loading.value = true
   const { data, error } = await supabase.auth.signUp({
     email: email.value,
-    password: password.value
+    password: password.value,
+    options: {
+      emailRedirectTo: window.location.origin + '/messenger/'
+    }
   })
   if (error) {
     alert(error)
