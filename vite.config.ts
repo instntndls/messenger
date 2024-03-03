@@ -9,6 +9,9 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/messenger/',
+  server: {
+    host: 'https://instntndls.github.io',
+  },
   css: {
     postcss: {
       plugins: [tailwind(), autoprefixer()],
