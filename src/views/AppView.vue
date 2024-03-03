@@ -2,7 +2,7 @@
 
 import { supabase } from '@/clients/supabase'
 import { Button } from '@/components/ui/button'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import router from '@/router'
 
 const currentUser = ref()
@@ -36,13 +36,22 @@ const logout = async () => {
   else {
     console.log('logged out')
   }
-  checkAuth()
+  await checkAuth()
 }
+
+onMounted(() => {
+  checkAuth()
+})
 </script>
 
 <template>
-  app
-  <Button @click="logout">Logout</Button>
+  <div class="w-screen h-screen flex flex-col items-center justify-center text-3xl gap-6">
+    Nothing here yet!
+
+    <p class="text-sm w-2/3">{{ currentUser}}</p>
+
+  </div>
+  <Button @click="logout" class="absolute right-4 top-4">Logout</Button>
 </template>
 
 <style scoped>
