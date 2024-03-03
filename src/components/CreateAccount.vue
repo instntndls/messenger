@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { EyeIcon, EyeOff, GithubIcon } from 'lucide-vue-next'
+import { EyeIcon, EyeOff, GithubIcon, Loader2 } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -14,6 +14,17 @@ import { Label } from '@/components/ui/label'
 import GoogleIcon from '@/components/icons/GoogleIcon.vue'
 import { ref } from 'vue'
 import { supabase } from '@/clients/supabase'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 
 const email = ref('')
 const password = ref('')
@@ -21,22 +32,38 @@ const password = ref('')
 const showPassword = ref(false)
 const inputType = ref('password')
 
+const emailValid = ref(false)
+
+const loading = ref(false)
+
 const toggleShowPassword = () => {
   showPassword.value = !showPassword.value
   inputType.value = showPassword.value ? 'text' : 'password'
 }
 
 const createAccount = async () => {
+  loading.value = true
   const { data, error } = await supabase.auth.signUp({
     email: email.value,
-    password: password.value
+    password: password.value,
+    options: {
+      emailRedirectTo: window.location.origin,
+    }
   })
   if (error) {
-    console.log(error)
+    alert(error)
+    loading.value = false
   }
   else {
     console.log(data)
   }
+}
+
+const validateEmail = (text: string) => {
+  emailValid.value = !!text.toLowerCase().match(
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  )
+  console.log(emailValid.value)
 }
 </script>
 
@@ -70,7 +97,7 @@ const createAccount = async () => {
 <!--      </div>-->
       <div class="grid gap-3">
         <Label for="email">Email</Label>
-        <Input id="email" type="email" placeholder="m@example.com" v-model="email"/>
+        <Input id="email" type="email" placeholder="m@example.com" v-model="email" @input="validateEmail(email)"/>
       </div>
       <div class="grid gap-3">
         <Label for="password">Password</Label>
@@ -84,9 +111,24 @@ const createAccount = async () => {
       </div>
     </CardContent>
     <CardFooter class="flex flex-col gap-6">
-      <Button class="w-full" @click="createAccount">
-        Create account
-      </Button>
+      <AlertDialog>
+        <AlertDialogTrigger class="w-full">
+          <Button :disabled="!emailValid || password.length < 6 || loading" class="w-full" @click="createAccount">
+            <Loader2 v-if="loading" class="size-4 mr-2 animate-spin"/>
+            Create account
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <p class="text-center">
+              Verification email was sent to your email
+            </p>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel class="w-full">Ok</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       <Label class="flex gap-1">
         Already have an account?
         <router-link class="text-blue-500 cursor-pointer hover:underline" to="/">Log In</router-link>

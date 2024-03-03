@@ -48,7 +48,7 @@ onMounted(() => {
   <div class="w-screen h-screen flex flex-col items-center justify-center text-3xl gap-6">
     Nothing here yet!
 
-    <p class="text-sm w-2/3">{{ currentUser}}</p>
+    <p class="text-sm w-2/3">{{ currentUser }}</p>
 
   </div>
   <Button @click="logout" class="absolute right-4 top-4">Logout</Button>

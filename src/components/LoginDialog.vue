@@ -15,7 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { GithubIcon, EyeIcon, EyeOff } from 'lucide-vue-next'
+import { GithubIcon, EyeIcon, EyeOff, Loader2 } from 'lucide-vue-next'
 
 import { supabase } from '@/clients/supabase'
 import { inject, provide, ref } from 'vue'
@@ -29,24 +29,39 @@ const inputType = ref('password')
 
 const checkAuth = inject('checkAuth')
 
+const emailValid = ref(false)
+
+const loading = ref(false)
+
 const toggleShowPassword = () => {
   showPassword.value = !showPassword.value
   inputType.value = showPassword.value ? 'text' : 'password'
 }
 
 const login = async () => {
+  loading.value = true
   const { data, error } = await supabase.auth.signInWithPassword({
     email: email.value,
     password: password.value
   })
   if (error) {
-    console.log(error)
+    alert(error)
+    loading.value = false
   }
   else {
     console.log(data)
   }
+
   await checkAuth()
 }
+
+const validateEmail = (text) => {
+  emailValid.value = !!text.toLowerCase().match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    )
+  console.log(emailValid.value)
+}
+
 
 </script>
 
@@ -67,7 +82,7 @@ const login = async () => {
         <CardContent class="space-y-3 flex flex-col">
           <div class="grid gap-3">
             <Label for="email">Email</Label>
-            <Input id="email" type="email" placeholder="mail@example.com" v-model="email" @keydown.enter="login"/>
+            <Input id="email" type="email" placeholder="mail@example.com" v-model="email" @keydown.enter="login" @input="validateEmail(email)"/>
           </div>
           <div class="grid gap-3">
             <Label for="password">Password</Label>
@@ -101,7 +116,10 @@ const login = async () => {
 <!--          </div>-->
         </CardContent>
         <CardFooter class="flex flex-col gap-4">
-          <Button class="w-full" @click="login">Log In</Button>
+          <Button :disabled="!emailValid || password.length < 6 || loading" class="w-full" @click="login">
+            <Loader2 v-if="loading" class="mr-2 size-4 animate-spin"/>
+            Log In
+          </Button>
           <Label>
             Forgot your username or password?
           </Label>
