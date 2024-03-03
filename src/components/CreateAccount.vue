@@ -12,7 +12,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import GoogleIcon from '@/components/icons/GoogleIcon.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { supabase } from '@/clients/supabase'
 import {
   AlertDialog,
@@ -47,7 +47,7 @@ const createAccount = async () => {
     email: email.value,
     password: password.value,
     options: {
-      emailRedirectTo: 'https://instntndls.github.io/messenger/',
+      emailRedirectTo: window.location.origin + '/messenger/app'
     }
   })
   if (error) {
@@ -121,7 +121,7 @@ const validateEmail = (text: string) => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <p class="text-center">
-              Verification email was sent to your email
+              Verification link was sent to your email
             </p>
           </AlertDialogHeader>
           <AlertDialogFooter>
