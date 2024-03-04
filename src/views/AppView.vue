@@ -10,6 +10,7 @@ import SettingsDialog from '@/components/SettingsDialog.vue'
 import LogoutAlert from '@/components/LogoutAlert.vue'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import ChatContent from '@/components/ChatContent.vue'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 const menuOpened = ref(true)
 
@@ -77,13 +78,15 @@ provide('menuOpened', menuOpened)
               </TabsTrigger>
             </TabsList>
             <TabsContent value="all">
-              <Card class="w-full h-28 bg-accent" @click="mobile ? menuOpened = !menuOpened: null"></Card>
+              <ScrollArea class="MessageList">
+                <Card class="w-full h-16 bg-accent/50 rounded-md my-4" @click="mobile ? menuOpened = !menuOpened: null">{{i}}</Card>
+              </ScrollArea>
             </TabsContent>
             <TabsContent value="unread" class="flex flex-col items-center ">
               <p class="py-8 font-bold opacity-80">No unread messages</p>
             </TabsContent>
           </Tabs>
-          <div class="Pusher h-full"/>
+          <div class="Pusher h-full min-h-0"/>
           <div class="BottomMenu">
             <logout-alert @logout="logout">
               <Button variant="destructive" class="LogoutButton">
@@ -120,7 +123,7 @@ provide('menuOpened', menuOpened)
 @media screen and (max-width: 576px) {
   /*MOBILE*/
   .Sidebar {
-    @apply absolute top-0 left-0 gap-4 px-6 py-6 h-screen flex flex-col
+    @apply absolute top-0 left-0 gap-2 px-6 py-6 h-screen flex flex-col
     items-start justify-start bg-background
     overflow-auto w-screen
   }
@@ -135,7 +138,10 @@ provide('menuOpened', menuOpened)
   @apply h-full w-full flex flex-row items-start justify-start bg-background
 }
 .BottomMenu {
-  @apply w-full flex flex-row justify-between
+  @apply py-4 w-full flex flex-row justify-between bg-background/80 backdrop-blur-md
+}
+.MessageList {
+  @apply w-full h-[65vh] min-h-64 px-2
 }
 
 .slide-enter-active {

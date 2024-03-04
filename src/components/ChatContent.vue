@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { inject, ref } from 'vue'
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import MessageCard from '@/components/MessageCard.vue'
 
 const mobile = ref(inject('mobile'))
 
@@ -44,11 +45,7 @@ const menuOpened = ref(inject('menuOpened'))
     </header>
     <ScrollArea class="Messages">
       <div class="h-14"/>
-      <div v-for="tag in 24" :key="tag" class="pt14">
-        <div class="h-14 w-1/3 rounded-sm bg-primary/50 m-4 text-secondary p-4">
-          {{ tag }}
-        </div>
-      </div>
+      <MessageCard :name="'name'" avatar-src="" image-src="" :message-text="''" message-time="10:00"/>
     </ScrollArea>
     <div class="TextInput">
       <Button variant="ghost" class="IconButton">
@@ -69,7 +66,7 @@ const menuOpened = ref(inject('menuOpened'))
 @media screen and (min-width: 576px) {
   /*DESKTOP*/
   .Header {
-    @apply -mb-14 w-full h-14 bg-accent/60 backdrop-blur-md rounded-sm flex flex-row items-center justify-between py-2 px-3 z-50
+    @apply -mb-14 w-full h-14 bg-accent/60 backdrop-blur-md rounded-md flex flex-row items-center justify-between py-2 px-3 z-50
   }
   .IconButton {
     @apply h-10 w-10 p-0 flex flex-row items-center justify-center
@@ -79,7 +76,7 @@ const menuOpened = ref(inject('menuOpened'))
 @media screen and (max-width: 576px) {
   /*MOBILE*/
   .Header {
-    @apply -mb-14 w-full h-16 bg-accent/60 backdrop-blur-md rounded-sm flex flex-row items-center justify-between py-2 px-3 z-50
+    @apply -mb-14 w-full h-16 bg-accent/60 backdrop-blur-md rounded-md flex flex-row items-center justify-between py-2 px-3 z-50
   }
   .IconButton {
     @apply h-10 w-16 p-0 flex flex-col items-center justify-center
