@@ -68,7 +68,7 @@ const validateEmail = (text: string) => {
 </script>
 
 <template>
-  <Card class="absolute">
+  <Card class="absolute bg-background/60 backdrop-blur-xl">
     <CardHeader class="space-y-1">
       <CardTitle class="text-2xl">
         Create an account
@@ -108,19 +108,25 @@ const validateEmail = (text: string) => {
             <EyeOff v-else/>
           </div>
         </div>
+        <CardDescription >
+          Password must be at least 6 characters
+        </CardDescription>
       </div>
     </CardContent>
     <CardFooter class="flex flex-col gap-6">
       <AlertDialog>
         <AlertDialogTrigger class="w-full">
-          <Button :disabled="!emailValid || password.length < 6 || loading" class="w-full" @click="createAccount">
+          <Button :disabled="!emailValid || password.length < 6 || loading"  class="w-full" @click="createAccount">
             <Loader2 v-if="loading" class="size-4 mr-2 animate-spin"/>
             Create account
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <p class="text-center">
+            <p v-if="!emailValid || password.length < 6" class="text-center text-red-500">
+              Fill all the fields and make sure the password is at least 6 characters
+            </p>
+            <p v-else class="text-center text-green-500">
               Verification link was sent to your email
             </p>
           </AlertDialogHeader>

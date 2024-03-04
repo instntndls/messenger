@@ -2,8 +2,18 @@
 
 import { supabase } from '@/clients/supabase'
 import { Button } from '@/components/ui/button'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, provide } from 'vue'
 import router from '@/router'
+import { SettingsIcon, LogOutIcon } from 'lucide-vue-next'
+import { Card } from '@/components/ui/card'
+import SettingsDialog from '@/components/SettingsDialog.vue'
+import LogoutAlert from '@/components/LogoutAlert.vue'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import ChatContent from '@/components/ChatContent.vue'
+
+const menuOpened = ref(true)
+
+const mobile = ref(window.innerWidth < 576)
 
 const currentUser = ref()
 const seeCurrentUser = async () => {
@@ -40,20 +50,99 @@ const logout = async () => {
 }
 
 onMounted(() => {
+  window.addEventListener("resize", () => {
+    menuOpened.value = true
+    mobile.value = window.innerWidth < 576;
+  });
   checkAuth()
 })
+
+provide('mobile', mobile)
+provide('menuOpened', menuOpened)
 </script>
 
 <template>
-  <div class="w-screen h-screen flex flex-col items-center justify-center text-3xl gap-6">
-    Nothing here yet!
-
-    <p class="text-sm w-2/3">{{ currentUser }}</p>
-
+  <div v-if="currentUser" class="w-full h-full flex">
+    <div class="Main">
+      <transition name="slide">
+        <div v-if="menuOpened" class="Sidebar">
+          <p class="text-2xl font-bold">Chats</p>
+          <Tabs default-value="all" class="w-full">
+            <TabsList class="w-full gap-1">
+              <TabsTrigger value="all" class="w-full">
+                All
+              </TabsTrigger>
+              <TabsTrigger value="unread" class="w-full">
+                Unread
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="all">
+              <Card class="w-full h-28 bg-accent" @click="mobile ? menuOpened = !menuOpened: null"></Card>
+            </TabsContent>
+            <TabsContent value="unread" class="flex flex-col items-center ">
+              <p class="py-8 font-bold opacity-80">No unread messages</p>
+            </TabsContent>
+          </Tabs>
+          <div class="Pusher h-full"/>
+          <div class="BottomMenu">
+            <logout-alert @logout="logout">
+              <Button variant="destructive" class="LogoutButton">
+                <LogOutIcon class="size-4 mr-2"/>
+                Logout
+              </Button>
+            </logout-alert>
+            <settings-dialog>
+              <Button variant="outline" class="SettingsButton">
+                <SettingsIcon class="size-4 mr-2"/>
+                Settings
+              </Button>
+            </settings-dialog>
+          </div>
+        </div>
+      </transition>
+      <ChatContent/>
+    </div>
   </div>
-  <Button @click="logout" class="absolute right-4 top-4">Logout</Button>
 </template>
 
 <style scoped>
+@media screen and (min-width: 576px) {
+  /*DESKTOP*/
+  .Sidebar {
+    @apply relative py-6 gap-4 h-screen flex flex-col
+    items-start justify-start bg-black
+    bg-opacity-[0.1] border border-gray-700
+    border-opacity-30 min-w-64 max-w-96
+    px-6 w-1/3
+  }
+}
 
+@media screen and (max-width: 576px) {
+  /*MOBILE*/
+  .Sidebar {
+    @apply absolute top-0 left-0 gap-4 px-6 py-6 h-screen flex flex-col
+    items-start justify-start bg-background
+    overflow-auto w-screen
+  }
+}
+.LogoutButton {
+  @apply w-max
+}
+.SettingsButton {
+  @apply w-max
+}
+.Main {
+  @apply h-full w-full flex flex-row items-start justify-start bg-background
+}
+.BottomMenu {
+  @apply w-full flex flex-row justify-between
+}
+
+.slide-enter-active {
+  transition: all 0.1s ease;
+}
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(-100%);
+}
 </style>

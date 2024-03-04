@@ -64,7 +64,7 @@ provide('checkAuth', checkAuth)
           <img class="size-8 rounded-md" src="@/components/icons/supabaseLogo.png" alt="supabaselogo">
 
         </div>
-        <p class="opacity-80 text-center">Stay connected with ease! Enjoy real-time messaging and a <br> clean interface for effortless communication. 💬✨</p>
+        <p class="opacity-80 text-center">Stay connected with ease! <br> Enjoy real-time messaging and a clean <br> interface for effortless communication.💬✨</p>
         <login-dialog>
           <Button class="flex gap-2">
             Get started

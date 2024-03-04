@@ -71,7 +71,7 @@ const validateEmail = (text) => {
       <slot></slot>
     </DialogTrigger>
     <DialogTitle/>
-    <DialogContent class="sm:max-w-[425px] p-0">
+    <DialogContent class="sm:max-w-[425px] p-0 bg-transparent">
       <Card>
         <CardHeader>
           <CardTitle>Log in</CardTitle>
@@ -79,7 +79,7 @@ const validateEmail = (text) => {
             Enter your email and password below to log in.
           </CardDescription>
         </CardHeader>
-        <CardContent class="space-y-3 flex flex-col">
+        <CardContent class="space-y-3 flex flex-col bg-transparent">
           <div class="grid gap-3">
             <Label for="email">Email</Label>
             <Input id="email" type="email" placeholder="mail@example.com" v-model="email" @keydown.enter="login" @input="validateEmail(email)"/>
