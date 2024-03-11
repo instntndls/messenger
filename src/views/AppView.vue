@@ -52,7 +52,7 @@ const logout = async () => {
 
 onMounted(() => {
   window.addEventListener("resize", () => {
-    menuOpened.value = true
+    menuOpened.value = window.innerWidth >= 576;
     mobile.value = window.innerWidth < 576;
   });
   checkAuth()
@@ -79,7 +79,7 @@ provide('menuOpened', menuOpened)
             </TabsList>
             <TabsContent value="all">
               <ScrollArea class="MessageList">
-                <Card class="w-full h-16 bg-accent/50 rounded-md my-4" @click="mobile ? menuOpened = !menuOpened: null">{{i}}</Card>
+                <Card class="w-full h-16 bg-accent/50 rounded-md my-4" @click="mobile ? menuOpened = !menuOpened: null"></Card>
               </ScrollArea>
             </TabsContent>
             <TabsContent value="unread" class="flex flex-col items-center ">
@@ -145,7 +145,7 @@ provide('menuOpened', menuOpened)
 }
 
 .slide-enter-active {
-  transition: all 0.1s ease;
+  transition: all 0.05s ease;
 }
 .slide-enter-from,
 .slide-leave-to {

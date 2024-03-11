@@ -1,19 +1,40 @@
-<script setup lang="ts">
+<script setup lang="js">
 
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { ChevronLeft, MoreVertical, SearchIcon, PlusCircle, SendHorizonal, SmileIcon } from 'lucide-vue-next'
 import MoreDropdown from '@/components/MoreDropdown.vue'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { inject, ref } from 'vue'
-import { Input } from '@/components/ui/input'
+import { inject, nextTick, onMounted, ref } from 'vue'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import MessageCard from '@/components/MessageCard.vue'
+import { useScroll } from '@vueuse/core'
+
+
+import EmojiPicker from 'vue3-emoji-picker'
+import 'vue3-emoji-picker/css'
 
 const mobile = ref(inject('mobile'))
 
 const menuOpened = ref(inject('menuOpened'))
+const pickerOpen = ref(false)
 
+const inputValue = ref('')
+
+const onSelectEmoji = (emoji) => {
+  inputValue.value += emoji.i
+}
+
+const scrollToBottom = () => {
+  nextTick(() => {
+    const scrollArea = document.getElementById('ScrollArea')
+    scrollArea.scrollTop = scrollArea.scrollHeight
+  })
+}
+
+onMounted(() => {
+  scrollToBottom()
+})
 </script>
 
 <template>
@@ -23,12 +44,12 @@ const menuOpened = ref(inject('menuOpened'))
         <Button v-if="mobile" variant="ghost" class="size-10 p-0" @click="menuOpened = !menuOpened">
           <ChevronLeft v-if="!menuOpened" class="size-1/2 hover:scale-110 transition"/>
         </Button>
-        <Avatar class="size-8">
+        <Avatar class="size-8 cursor-pointer">
           <AvatarImage src=" " />
           <AvatarFallback>UN</AvatarFallback>
         </Avatar>
         <div class="ContactData flex flex-col gap-0.5">
-          <Label class="font-bold">User Name</Label>
+          <Label class="font-bold cursor-pointer">User Name</Label>
           <Label class="text-neutral-500">hour ago</Label>
         </div>
       </div>
@@ -43,19 +64,30 @@ const menuOpened = ref(inject('menuOpened'))
         </more-dropdown>
       </div>
     </header>
-    <ScrollArea class="Messages">
+    <div id="ScrollArea" class="Messages">
       <div class="h-14"/>
-      <MessageCard :name="'name'" avatar-src="" image-src="" :message-text="''" message-time="10:00"/>
-    </ScrollArea>
+      <MessageCard v-for="i in 10" :key="i" :name="'name'" avatar-src="" image-src="https://parpol.ru/wp-content/uploads/2019/09/placeholder.png" :message-text="i.toString()" message-time="10:00"/>
+    </div>
     <div class="TextInput">
       <Button variant="ghost" class="IconButton">
         <PlusCircle class="size-4/6"/>
       </Button>
-      <input type="text" placeholder="Type your message..." class="InputField"/>
-      <Button variant="ghost" class="IconButton ">
+      <input type="text" placeholder="Type your message..." class="InputField" v-model="inputValue"/>
+      <Button variant="ghost" class="IconButton" @click="pickerOpen = !pickerOpen">
         <SmileIcon class="size-4/6"/>
       </Button>
-      <Button variant="ghost" class="IconButton">
+      <transition-group>
+        <div v-if="pickerOpen" class="bg-black/10 backdrop-blur-sm absolute right-0 bottom-0 w-full h-full" @click="pickerOpen = false"/>
+        <EmojiPicker
+          class="absolute right-10 bottom-20"
+          v-if="pickerOpen"
+          :native="true"
+          :theme="'auto'"
+          :disable-skin-tones="true"
+          @select="onSelectEmoji">
+        </EmojiPicker>
+      </transition-group>
+      <Button variant="ghost" class="IconButton" @click="scrollToBottom">
         <SendHorizonal class="size-4/6"/>
       </Button>
     </div>
@@ -83,7 +115,7 @@ const menuOpened = ref(inject('menuOpened'))
   }
 }
 .Messages {
-  @apply h-full w-full
+  @apply h-full w-full overflow-y-auto
 }
 .ChatContent {
   @apply h-[95vh] w-full m-4 overflow-y-auto flex flex-col
@@ -97,6 +129,17 @@ const menuOpened = ref(inject('menuOpened'))
 .InputField {
   @apply w-full h-full bg-transparent
   placeholder:text-sm placeholder:text-primary/50 placeholder:font-light
-  outline-none
+  outline-none z-50
 }
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.1s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
 </style>

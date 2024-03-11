@@ -1,7 +1,7 @@
-<script setup lang="ts">
+<script setup lang="js">
 
 import { Avatar } from '@/components/ui/avatar'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 defineProps({
   name: String,
@@ -13,12 +13,14 @@ defineProps({
 
 const nameFallback = ref('UN')
 
+onMounted(() => {
 
+})
 
 </script>
 
 <template>
-  <div v-if="messageText" class="Main">
+  <div v-if="messageText" id="Main" class="Main">
     <Avatar class="size-8">
       <AvatarImage :src="avatarSrc" />
       <AvatarFallback>{{ nameFallback }}</AvatarFallback>
@@ -43,7 +45,7 @@ const nameFallback = ref('UN')
   @apply h-min px-2 min-w-24 rounded-sm max-w-64
 }
 .MessageImage {
-  @apply min-w-24 min-h-24 max-w-48 max-h-48 border-[1px] border-primary/50 rounded-md p-[1px] mb-1
+  @apply min-w-24 min-h-24 max-w-48 max-h-48 rounded-md p-[1px] mb-1
 }
 .MessageTime {
   @apply text-[12px] text-primary/60 font-light flex flex-row items-center
