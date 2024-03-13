@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
 import {
-  Dialog, DialogClose,
+  Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -16,7 +17,7 @@ import { Label } from '@/components/ui/label'
 <template>
   <Dialog>
     <DialogTrigger as-child>
-      <slot/>
+      <slot />
     </DialogTrigger>
     <DialogContent class="sm:max-w-[425px]">
       <DialogHeader>
@@ -27,29 +28,21 @@ import { Label } from '@/components/ui/label'
       </DialogHeader>
       <div class="grid gap-4 py-4">
         <div class="grid grid-cols-4 items-center gap-4">
-          <Label for="name" class="text-right">
-            Name
-          </Label>
+          <Label for="name" class="text-right"> Name </Label>
           <Input id="name" class="col-span-3" />
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
-          <Label for="username" class="text-right">
-            Username
-          </Label>
+          <Label for="username" class="text-right"> Username </Label>
           <Input id="username" class="col-span-3" />
         </div>
       </div>
       <DialogFooter>
         <DialogClose class="w-full">
-          <Button type="submit" class="w-full">
-            Save changes
-          </Button>
+          <Button type="submit" class="w-full"> Save changes </Button>
         </DialogClose>
       </DialogFooter>
     </DialogContent>
   </Dialog>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,6 +1,4 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <svg role="img" viewBox="0 0 24 24" class="mr-2 h-4 w-4">
@@ -11,6 +9,4 @@
   </svg>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

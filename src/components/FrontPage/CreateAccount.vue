@@ -7,7 +7,7 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -23,7 +23,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
+  AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
 
 const email = ref('')
@@ -53,16 +53,17 @@ const createAccount = async () => {
   if (error) {
     alert(error)
     loading.value = false
-  }
-  else {
+  } else {
     console.log(data)
   }
 }
 
 const validateEmail = (text: string) => {
-  emailValid.value = !!text.toLowerCase().match(
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  )
+  emailValid.value = !!text
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    )
   console.log(emailValid.value)
 }
 </script>
@@ -70,54 +71,61 @@ const validateEmail = (text: string) => {
 <template>
   <Card class="absolute bg-background/60 backdrop-blur-xl">
     <CardHeader class="space-y-1">
-      <CardTitle class="text-2xl">
-        Create an account
-      </CardTitle>
-      <CardDescription>
-        Enter your email below to create your account
-      </CardDescription>
+      <CardTitle class="text-2xl"> Create an account </CardTitle>
+      <CardDescription> Enter your email below to create your account </CardDescription>
     </CardHeader>
     <CardContent class="space-y-3 flex flex-col">
-<!--      <div class="grid grid-cols-2 gap-6">-->
-<!--        <Button variant="outline">-->
-<!--          <GithubIcon class=" pr-2"/>-->
-<!--          Github-->
-<!--        </Button>-->
-<!--        <Button variant="outline">-->
-<!--          <GoogleIcon/>-->
-<!--          Google-->
-<!--        </Button>-->
-<!--      </div>-->
-<!--      <div class="relative">-->
-<!--        <div class="relative flex justify-center text-xs uppercase">-->
-<!--          <span class="px-2 text-muted-foreground">-->
-<!--            Or continue with-->
-<!--          </span>-->
-<!--        </div>-->
-<!--      </div>-->
+      <!--      <div class="grid grid-cols-2 gap-6">-->
+      <!--        <Button variant="outline">-->
+      <!--          <GithubIcon class=" pr-2"/>-->
+      <!--          Github-->
+      <!--        </Button>-->
+      <!--        <Button variant="outline">-->
+      <!--          <GoogleIcon/>-->
+      <!--          Google-->
+      <!--        </Button>-->
+      <!--      </div>-->
+      <!--      <div class="relative">-->
+      <!--        <div class="relative flex justify-center text-xs uppercase">-->
+      <!--          <span class="px-2 text-muted-foreground">-->
+      <!--            Or continue with-->
+      <!--          </span>-->
+      <!--        </div>-->
+      <!--      </div>-->
       <div class="grid gap-3">
         <Label for="email">Email</Label>
-        <Input id="email" type="email" placeholder="m@example.com" v-model="email" @input="validateEmail(email)"/>
+        <Input
+          id="email"
+          type="email"
+          placeholder="m@example.com"
+          v-model="email"
+          @input="validateEmail(email)"
+        />
       </div>
       <div class="grid gap-3">
         <Label for="password">Password</Label>
         <div class="flex items-center">
-          <Input id="password" :type="inputType" v-model="password"/>
-          <div @click="toggleShowPassword" class="absolute right-10 cursor-pointer opacity-30 hover:opacity-70">
+          <Input id="password" :type="inputType" v-model="password" />
+          <div
+            @click="toggleShowPassword"
+            class="absolute right-10 cursor-pointer opacity-30 hover:opacity-70"
+          >
             <EyeIcon v-if="!showPassword" />
-            <EyeOff v-else/>
+            <EyeOff v-else />
           </div>
         </div>
-        <CardDescription >
-          Password must be at least 6 characters
-        </CardDescription>
+        <CardDescription> Password must be at least 6 characters </CardDescription>
       </div>
     </CardContent>
     <CardFooter class="flex flex-col gap-6">
       <AlertDialog>
         <AlertDialogTrigger class="w-full">
-          <Button :disabled="!emailValid || password.length < 6 || loading"  class="w-full" @click="createAccount">
-            <Loader2 v-if="loading" class="size-4 mr-2 animate-spin"/>
+          <Button
+            :disabled="!emailValid || password.length < 6 || loading"
+            class="w-full"
+            @click="createAccount"
+          >
+            <Loader2 v-if="loading" class="size-4 mr-2 animate-spin" />
             Create account
           </Button>
         </AlertDialogTrigger>
@@ -137,12 +145,12 @@ const validateEmail = (text: string) => {
       </AlertDialog>
       <Label class="flex gap-1">
         Already have an account?
-        <router-link class="text-blue-500 cursor-pointer hover:underline" to="/">Log In</router-link>
+        <router-link class="text-blue-500 cursor-pointer hover:underline" to="/"
+          >Log In</router-link
+        >
       </Label>
     </CardFooter>
   </Card>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

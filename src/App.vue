@@ -5,7 +5,7 @@ import { onMounted } from 'vue'
 
 const isDark = useDark()
 
-onMounted( () => {
+onMounted(() => {
   isDark.value = true
 })
 </script>
@@ -14,5 +14,4 @@ onMounted( () => {
   <RouterView />
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

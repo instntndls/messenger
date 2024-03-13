@@ -1,8 +1,7 @@
 <script setup lang="ts">
-
-import CreateAccount from '@/components/CreateAccount.vue'
+import CreateAccount from '@/components/FrontPage/CreateAccount.vue'
 import { onMounted, ref } from 'vue'
-import Backdrop from '@/components/Backdrop.vue'
+import Backdrop from '@/components/FrontPage/Backdrop.vue'
 
 const smoothIn = ref(false)
 
@@ -14,18 +13,17 @@ onMounted(() => {
 </script>
 
 <template>
-
-  <Backdrop/>
+  <Backdrop />
   <transition>
     <div v-if="smoothIn" class="Main">
-      <CreateAccount/>
+      <CreateAccount />
     </div>
   </transition>
 </template>
 
 <style scoped>
 .Main {
-  @apply absolute top-0 left-0 z-10 w-screen h-screen flex flex-col items-center justify-center gap-6
+  @apply absolute top-0 left-0 z-10 w-screen h-screen flex flex-col items-center justify-center gap-6;
 }
 .v-enter-active,
 .v-leave-active {
