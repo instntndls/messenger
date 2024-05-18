@@ -17,17 +17,16 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import { EyeIcon, EyeOff, Loader2 } from 'lucide-vue-next'
+import { getJWT, getUserData } from '@/api/api'
 
-import { supabase } from '@/clients/supabase.js'
-import { inject, ref } from 'vue'
+import { ref } from 'vue'
+import router from '@/router'
 
 const email = ref('')
 const password = ref('')
 
 const showPassword = ref(false)
 const inputType = ref('password')
-
-const checkAuth = inject('checkAuth')
 
 const emailValid = ref(false)
 
@@ -40,19 +39,20 @@ const toggleShowPassword = () => {
 
 const login = async () => {
   loading.value = true
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: email.value,
+  await getJWT({
+    username: email.value,
     password: password.value
-  })
-  if (error) {
-    alert(error)
+  }).then( () => {
+    router.push('/app')
     loading.value = false
-  } else {
-    console.log(data)
-  }
+    getUserData()
+  }).catch( () => {
+    alert('Wrong email or password')
+  })
 
-  await checkAuth()
 }
+
+
 
 const validateEmail = (text) => {
   emailValid.value = !!text
@@ -101,26 +101,6 @@ const validateEmail = (text) => {
               </div>
             </div>
           </div>
-          <!--          <div class="relative py-2">-->
-          <!--            <div class="absolute inset-0 flex items-center">-->
-          <!--              <span class="w-full border-t" />-->
-          <!--            </div>-->
-          <!--            <div class="relative flex justify-center text-xs uppercase">-->
-          <!--                  <span class="bg-background text-muted-foreground">-->
-          <!--                    Or continue with-->
-          <!--                  </span>-->
-          <!--            </div>-->
-          <!--          </div>-->
-          <!--          <div class="grid grid-cols-2 gap-6">-->
-          <!--            <Button variant="outline">-->
-          <!--              <GithubIcon class=" pr-2"/>-->
-          <!--              Github-->
-          <!--            </Button>-->
-          <!--            <Button variant="outline">-->
-          <!--              <GoogleIcon/>-->
-          <!--              Google-->
-          <!--            </Button>-->
-          <!--          </div>-->
         </CardContent>
         <CardFooter class="flex flex-col gap-4">
           <Button

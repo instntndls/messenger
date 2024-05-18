@@ -4,28 +4,23 @@ import { onMounted, provide, ref } from 'vue'
 
 import { Button } from '@/components/ui/button'
 import LoginDialog from '@/components/FrontPage/LoginDialog.vue'
-import { CalendarDays, LucideArrowRight, PlusIcon, GithubIcon } from 'lucide-vue-next'
-import { supabase } from '@/clients/supabase'
+import { LucideArrowRight, PlusIcon } from 'lucide-vue-next'
 import router from '@/router'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { getUserData } from '@/api/api'
 
 const smoothIn = ref(false)
 
 const currentUser = ref()
 
 const seeCurrentUser = async () => {
-  const { data, error } = await supabase.auth.getSession()
-  if (error) {
-    currentUser.value = null
-  } else {
-    currentUser.value = data.session?.user
-    console.log(currentUser.value)
+  if (localStorage.getItem('token')) {
+    currentUser.value = await getUserData()
   }
 }
 
 const checkAuth = async () => {
-  console.log('checkAuth')
   await seeCurrentUser()
   if (currentUser.value) {
     await router.push('/app')
@@ -51,14 +46,14 @@ provide('checkAuth', checkAuth)
       <div class="Title flex flex-col items-center gap-8 h-[90%] justify-center">
         <h1 class="text-4xl text-white font-black leading-relaxed">Vue3 Messenger</h1>
         <div class="flex gap-3 h-8 items-center justify-center">
-          <img class="size-8 rounded-md" src="@/components/icons/VueLogo.png" alt="vuelogo" />
-          <PlusIcon class="text-accent" />
+          <img class="size-8 rounded-md" src="@/components/icons/vueLogo.png" alt="vuelogo" />
+          <PlusIcon class="text-white" />
           <img class="size-8 rounded-md" src="@/components/icons/shadcnLogo.png" alt="shadcnlogo" />
-          <PlusIcon class="text-accent" />
+          <PlusIcon class="text-white" />
           <img
-            class="size-8 rounded-md"
-            src="@/components/icons/supabaseLogo.png"
-            alt="supabaselogo"
+            class="w-8 rounded-md"
+            src="@/components/icons/tailwindLogo.png"
+            alt="tailwindcsslogo"
           />
         </div>
         <p class="opacity-80 text-center text-white">

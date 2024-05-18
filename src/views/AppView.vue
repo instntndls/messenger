@@ -1,5 +1,4 @@
 <script setup>
-import { supabase } from '@/clients/supabase'
 import { Button } from '@/components/ui/button'
 import { onMounted, ref, provide } from 'vue'
 import router from '@/router'
@@ -9,25 +8,27 @@ import SettingsDialog from '@/components/App/SettingsDialog.vue'
 import LogoutAlert from '@/components/App/LogoutAlert.vue'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import ChatContent from '@/components/App/ChatContent.vue'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { getUserData, getAllChats } from '@/api/api'
 
 const menuOpened = ref(true)
 
 const mobile = ref(window.innerWidth < 576)
 
+const chats = ref()
+const selectedChatId = ref()
+
 const currentUser = ref()
 const seeCurrentUser = async () => {
-  const { data, error } = await supabase.auth.getSession()
-  if (error) {
-    currentUser.value = null
-  } else {
-    currentUser.value = data.session?.user
-    console.log(currentUser.value)
-  }
+  await getUserData()
+    .then((response) => {
+      currentUser.value = response
+    })
+    .catch((error) => {
+      console.log(error)
+    })
 }
 
 const checkAuth = async () => {
-  console.log('checkAuth')
   await seeCurrentUser()
   if (currentUser.value) {
     await router.push('/app')
@@ -37,13 +38,20 @@ const checkAuth = async () => {
 }
 
 const logout = async () => {
-  const { error } = await supabase.auth.signOut()
-  if (error) {
-    console.log(error)
-  } else {
-    console.log('logged out')
-  }
-  await checkAuth()
+  localStorage.removeItem('token')
+  localStorage.removeItem('refresh_token')
+  await router.push('/')
+}
+
+const getChats = async () => {
+  await getAllChats()
+    .then((response) => {
+      console.log(response)
+      chats.value = response
+    })
+    .catch((error) => {
+      console.log(error)
+    })
 }
 
 onMounted(() => {
@@ -52,6 +60,7 @@ onMounted(() => {
     mobile.value = window.innerWidth < 576
   })
   checkAuth()
+  getChats()
 })
 
 provide('mobile', mobile)
@@ -71,10 +80,13 @@ provide('menuOpened', menuOpened)
             </TabsList>
             <TabsContent value="all">
               <div class="MessageList">
-                <Card
-                  class="w-full h-16 bg-accent/50 rounded-md my-4"
+                <Card v-for="chat in chats" :key="chat.id"
+                  class="w-full h-16 bg-accent/50 rounded-md my-4 p-4"
                   @click="mobile ? (menuOpened = !menuOpened) : null"
-                ></Card>
+                >
+                  <p v-if="chat.name">{{ chat.name }}</p>
+                  <p v-else>{{ chat.second_user_first_name + ' ' + chat.second_user_last_name }}</p>
+                </Card>
               </div>
             </TabsContent>
             <TabsContent value="unread" class="flex flex-col items-center">

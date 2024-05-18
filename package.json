@@ -19,6 +19,7 @@
     "@vee-validate/yup": "^4.12.5",
     "@vee-validate/zod": "^4.12.5",
     "@vueuse/core": "^10.9.0",
+    "axios": "^1.6.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "lucide-vue-next": "^0.343.0",
