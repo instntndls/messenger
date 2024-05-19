@@ -50,7 +50,7 @@ const menuOpened = ref(inject('menuOpened'))
 @media screen and (max-width: 576px) {
   /*MOBILE*/
   .Header {
-    @apply -mb-14 w-full h-16 bg-accent/80 border border-accent/50 backdrop-blur-md rounded-md flex flex-row items-center justify-between py-2 px-3;
+    @apply -mb-14 w-full h-16 bg-accent/80 border border-foreground/5 backdrop-blur-md rounded-md flex flex-row items-center justify-between py-2 px-3;
   }
 }
 

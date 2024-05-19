@@ -105,7 +105,7 @@ onMounted(() => {
   @apply h-full w-[99%] overflow-y-auto;
 }
 .ChatContent {
-  @apply h-[95vh] w-full m-4 overflow-y-auto flex flex-col items-center justify-center;
+  @apply h-[95dvh] w-full m-3 overflow-y-auto flex flex-col items-center justify-center;
 }
 .TextInput {
   @apply p-1 w-full h-12 bg-background/50 rounded-md border-[1px] border-accent flex flex-row items-center justify-evenly px-2 gap-3;

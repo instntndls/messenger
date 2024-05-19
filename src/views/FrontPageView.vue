@@ -110,7 +110,7 @@ provide('checkAuth', checkAuth)
 
 <style scoped>
 .Main {
-  @apply absolute top-0 left-0 z-10 w-screen h-screen;
+  @apply absolute top-0 left-0 z-10 w-screen h-dvh;
 }
 
 .v-enter-active,

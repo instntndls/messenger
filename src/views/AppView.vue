@@ -119,10 +119,9 @@ provide('menuOpened', menuOpened)
 @media screen and (min-width: 576px) {
   /*DESKTOP*/
   .Sidebar {
-    @apply relative py-6 gap-4 h-screen flex flex-col
+    @apply relative py-6 gap-4 h-dvh flex flex-col
     items-start justify-start bg-background
-    bg-opacity-[0.1] border border-gray-700
-    border-opacity-30 min-w-64 max-w-96
+    bg-opacity-[0.1] border-r border-foreground/10 rounded-sm min-w-64 max-w-96
     px-6 w-1/3;
   }
 }
@@ -130,7 +129,7 @@ provide('menuOpened', menuOpened)
 @media screen and (max-width: 576px) {
   /*MOBILE*/
   .Sidebar {
-    @apply absolute top-0 left-0 gap-2 px-6 py-6 h-screen flex flex-col
+    @apply absolute top-0 left-0 gap-2 px-6 py-6 h-dvh flex flex-col
     items-start justify-start bg-background
     overflow-auto w-screen;
   }
@@ -148,7 +147,7 @@ provide('menuOpened', menuOpened)
   @apply py-4 w-full flex flex-row justify-between;
 }
 .MessageList {
-  @apply w-full h-full px-2 overflow-y-auto;
+  @apply w-full h-[60dvh] px-2 overflow-y-auto;
 }
 
 .slide-enter-active {

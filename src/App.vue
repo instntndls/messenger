@@ -6,7 +6,7 @@ import { onMounted } from 'vue'
 const isDark = useDark()
 
 onMounted(() => {
-  isDark.value = true
+  isDark.value = false
 })
 </script>
 
