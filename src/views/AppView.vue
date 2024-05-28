@@ -8,14 +8,32 @@ import SettingsDialog from '@/components/App/SettingsDialog.vue'
 import LogoutAlert from '@/components/App/LogoutAlert.vue'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import ChatContent from '@/components/App/ChatContent.vue'
-import { getUserData, getAllChats } from '@/api/api'
+import { getUserData, getAllChats, getAllChatMessages, getMessage } from '@/api'
+import {
+  initSocket,
+  closeSocket,
+  onMessageCreated,
+  onMessageUpdated,
+  onMessageDeleted,
+  onUserWriting,
+  onUserWrote,
+  notifyMessageCreated,
+  notifyMessageChanged,
+  notifyMessageDeleted,
+  notifyUserWriting,
+  notifyUserWrote
+} from '@/websocket'
+import { watch } from 'vue'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
 const menuOpened = ref(true)
 
 const mobile = ref(window.innerWidth < 576)
 
 const chats = ref()
+const messages = ref()
 const selectedChatId = ref()
+const selectedChatName = ref('')
 
 const currentUser = ref()
 const seeCurrentUser = async () => {
@@ -41,6 +59,7 @@ const logout = async () => {
   localStorage.removeItem('token')
   localStorage.removeItem('refresh_token')
   await router.push('/')
+  closeSocket()
 }
 
 const getChats = async () => {
@@ -54,17 +73,26 @@ const getChats = async () => {
     })
 }
 
-onMounted(() => {
+onMounted(async () => {
   window.addEventListener('resize', () => {
     menuOpened.value = window.innerWidth >= 576
     mobile.value = window.innerWidth < 576
   })
-  checkAuth()
-  getChats()
+  await checkAuth()
+  await getChats()
+  messages.value = await getAllChatMessages(selectedChatId.value)
+
+})
+
+watch(selectedChatId, async () => {
+  messages.value = await getAllChatMessages(selectedChatId.value)
 })
 
 provide('mobile', mobile)
 provide('menuOpened', menuOpened)
+provide('messages', messages)
+provide('selectedChatId', selectedChatId)
+provide('selectedChatName', selectedChatName)
 </script>
 
 <template>
@@ -80,13 +108,24 @@ provide('menuOpened', menuOpened)
             </TabsList>
             <TabsContent value="all">
               <div class="MessageList">
-                <Card v-for="chat in chats" :key="chat.id"
-                  class="w-full h-16 bg-accent/50 rounded-md my-4 p-4"
-                  @click="mobile ? (menuOpened = !menuOpened) : null"
+                <Button :variant=" selectedChatId === chat.id ? 'secondary' : 'outline' " v-for="chat in chats" :key="chat.id"
+                  class="w-full h-16 rounded-md my-4 p-4 flex gap-4 justify-start items-center cursor-pointer"
+                  @click="mobile ? (menuOpened = !menuOpened) : null; selectedChatId = chat.id; messages = null;
+                  selectedChatName = chat.name ? chat.name : chat.second_user_first_name + ' ' + chat.second_user_last_name"
                 >
-                  <p v-if="chat.name">{{ chat.name }}</p>
-                  <p v-else>{{ chat.second_user_first_name + ' ' + chat.second_user_last_name }}</p>
-                </Card>
+                  <Avatar>
+                    <AvatarFallback class="font-bold">
+                      <span v-if="chat.name">{{ chat.name.charAt(0) }}</span>
+                      <span v-else>{{ chat.second_user_first_name.charAt(0) }}</span>
+                    </AvatarFallback>
+                  </Avatar>
+
+                  <div class="h-full truncate text-ellipsis">
+                    <span v-if="chat.name">{{ chat.name }}</span>
+                    <span v-else>{{ chat.second_user_first_name + ' ' + chat.second_user_last_name }}</span>
+                  </div>
+
+                </Button>
               </div>
             </TabsContent>
             <TabsContent value="unread" class="flex flex-col items-center">
@@ -110,7 +149,7 @@ provide('menuOpened', menuOpened)
           </div>
         </div>
       </transition>
-      <ChatContent />
+      <ChatContent v-if="selectedChatId"/>
     </div>
   </div>
 </template>
@@ -119,10 +158,10 @@ provide('menuOpened', menuOpened)
 @media screen and (min-width: 576px) {
   /*DESKTOP*/
   .Sidebar {
-    @apply relative py-6 gap-4 h-dvh flex flex-col
+    @apply relative py-6 gap-4 h-dvh flex flex-col w-full
     items-start justify-start bg-background
     bg-opacity-[0.1] border-r border-foreground/10 rounded-sm min-w-64 max-w-96
-    px-6 w-1/3;
+    px-6;
   }
 }
 

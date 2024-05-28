@@ -6,14 +6,23 @@ import {
   SendHorizonal,
   SmileIcon
 } from 'lucide-vue-next'
-import { inject, nextTick, onMounted, ref } from 'vue'
+import { inject, nextTick, onMounted, ref, watch } from 'vue'
 import MessageCard from '@/components/App/MessageCard.vue'
 
 import EmojiPicker from 'vue3-emoji-picker'
 import 'vue3-emoji-picker/css'
 import ChatHeader from '@/components/App/ChatHeader.vue'
+import { initSocket, onMessageCreated } from '@/websocket'
+import { createMessage, getAllChatMessages, getMessage } from '@/api'
+import LoadingScreen from '@/components/App/LoadingScreen.vue'
+
+const selectedChatId = inject('selectedChatId')
+
+const messages = inject('messages')
 
 const mobile = ref(inject('mobile'))
+
+const loading = ref()
 
 const menuOpened = ref(inject('menuOpened'))
 const pickerOpen = ref(false)
@@ -31,24 +40,59 @@ const scrollToBottom = () => {
   })
 }
 
-onMounted(() => {
+const sendMessage = async () => {
+  if (inputValue.value) {
+    await createMessage(inputValue.value, selectedChatId.value)
+    messages.value = await getAllChatMessages(selectedChatId.value)
+    inputValue.value = ''
+    scrollToBottom()
+  }
+}
+
+onMounted(async () => {
+
+  loading.value = true
+
+  scrollToBottom()
+
+  initSocket(localStorage.getItem('token'), JSON.parse(localStorage.getItem('user')).id)
+
+  onMessageCreated((data) => {
+    getMessage(data.message_id).then((response) => {
+      messages.value.push(response)
+      scrollToBottom()
+    })
+  })
+
+})
+
+watch(messages, () => {
+  if (messages.value) {
+    loading.value = false
+  }
+  else {
+    loading.value = true
+  }
   scrollToBottom()
 })
+
 </script>
 
 <template>
   <div :class="(mobile && !menuOpened) || (!mobile && menuOpened) ? 'ChatContent' : 'hidden'">
     <ChatHeader/>
-    <div id="ScrollArea" class="Messages">
+    <LoadingScreen v-if="loading"/>
+    <div v-else id="ScrollArea" class="Messages">
       <div class="h-14" />
       <MessageCard
-        v-for="i in 10"
-        :key="i"
+        v-for="message in messages"
+        :key="message.id"
         :name="'name'"
         avatar-src=""
-        image-src="https://parpol.ru/wp-content/uploads/2019/09/placeholder.png"
-        :message-text="i.toString()"
-        message-time="10:00"
+        image-src=""
+        :message-text="message.text"
+        :message-time="message.created_at"
+        :status="message.status"
       />
     </div>
     <div class="TextInput z-50">
@@ -60,6 +104,7 @@ onMounted(() => {
         placeholder="Type your message..."
         class="InputField"
         v-model="inputValue"
+        @keydown.enter="sendMessage"
       />
       <Button variant="ghost" class="IconButton" @click="pickerOpen = !pickerOpen">
         <SmileIcon class="size-4/6" />
@@ -80,7 +125,7 @@ onMounted(() => {
         >
         </EmojiPicker>
       </transition-group>
-      <Button variant="ghost" class="IconButton" @click="scrollToBottom">
+      <Button variant="ghost" class="IconButton" @click="sendMessage">
         <SendHorizonal class="size-4/6" />
       </Button>
     </div>

@@ -20,7 +20,7 @@ import {
   AlertDialogHeader,
   AlertDialogTrigger
 } from '@/components/ui/alert-dialog'
-import { verifyEmail } from '@/api/api'
+import { verifyEmail } from '@/api'
 
 const step = ref(1)
 

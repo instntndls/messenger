@@ -8,7 +8,7 @@ import { LucideArrowRight, PlusIcon } from 'lucide-vue-next'
 import router from '@/router'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { getUserData } from '@/api/api'
+import { getUserData } from '@/api'
 
 const smoothIn = ref(false)
 

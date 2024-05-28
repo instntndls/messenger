@@ -1,14 +1,16 @@
-<script setup lang="ts">
+<script setup lang="js">
 
 import { ChevronLeft, MoreVertical, SearchIcon } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Label } from '@/components/ui/label'
 import MoreDropdown from '@/components/App/MoreDropdown.vue'
-import { inject, ref } from 'vue'
+import { inject, ref} from 'vue'
 
 const mobile = ref(inject('mobile'))
 const menuOpened = ref(inject('menuOpened'))
+
+const selectedChatName = inject('selectedChatName')
 </script>
 
 <template>
@@ -17,12 +19,16 @@ const menuOpened = ref(inject('menuOpened'))
       <Button v-if="mobile" variant="ghost" class="size-10 p-0" @click="menuOpened = !menuOpened">
         <ChevronLeft v-if="!menuOpened" class="size-1/2 hover:scale-110 transition" />
       </Button>
-      <Avatar class="size-8 cursor-pointer">
-        <AvatarImage src=" "/>
-        <AvatarFallback>UN</AvatarFallback>
+      <Avatar>
+        <AvatarFallback class="font-bold">
+          {{ selectedChatName.charAt(0) }}
+        </AvatarFallback>
       </Avatar>
+
       <div class="ContactData flex flex-col gap-0.5">
-        <Label class="font-bold cursor-pointer">User Name</Label>
+        <Label class="font-bold cursor-pointer">
+          {{ selectedChatName }}
+        </Label>
         <Label class="text-neutral-500">hour ago</Label>
       </div>
     </div>

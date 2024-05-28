@@ -17,7 +17,7 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import { EyeIcon, EyeOff, Loader2 } from 'lucide-vue-next'
-import { getJWT, getUserData } from '@/api/api'
+import { getJWT, getUserData } from '@/api'
 
 import { ref } from 'vue'
 import router from '@/router'
@@ -48,6 +48,7 @@ const login = async () => {
     getUserData()
   }).catch( () => {
     alert('Wrong email or password')
+    loading.value = false
   })
 
 }
