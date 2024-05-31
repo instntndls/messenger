@@ -45,7 +45,9 @@ const login = async () => {
   }).then( () => {
     router.push('/app')
     loading.value = false
-    getUserData()
+    getUserData().then( (response) => {
+      localStorage.setItem('user', JSON.stringify(response))
+    })
   }).catch( () => {
     alert('Wrong email or password')
     loading.value = false

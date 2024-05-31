@@ -93,7 +93,7 @@ async function getMessage (messageId: number) {
 }
 
 async function createMessage (message: string, chatId: number) {
-  await axios.post(
+  const response = await axios.post(
     `${AppConfig.baseAPI}/chat/message/`, "", {
       params: {
         text: message,
@@ -104,6 +104,7 @@ async function createMessage (message: string, chatId: number) {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
     })
+  return response.data
 }
 
 async function getChatById (chatId: number) {

@@ -12,7 +12,7 @@ import MessageCard from '@/components/App/MessageCard.vue'
 import EmojiPicker from 'vue3-emoji-picker'
 import 'vue3-emoji-picker/css'
 import ChatHeader from '@/components/App/ChatHeader.vue'
-import { initSocket, onMessageCreated } from '@/websocket'
+import { initSocket, onMessageCreated, notifyMessageCreated } from '@/websocket'
 import { createMessage, getAllChatMessages, getMessage } from '@/api'
 import LoadingScreen from '@/components/App/LoadingScreen.vue'
 
@@ -42,19 +42,16 @@ const scrollToBottom = () => {
 
 const sendMessage = async () => {
   if (inputValue.value) {
-    await createMessage(inputValue.value, selectedChatId.value)
+    const response = await createMessage(inputValue.value, selectedChatId.value)
+    notifyMessageCreated(JSON.parse(localStorage.getItem('user')).id, selectedChatId.value, response.id)
     messages.value = await getAllChatMessages(selectedChatId.value)
     inputValue.value = ''
     scrollToBottom()
+    
   }
 }
 
-onMounted(async () => {
-
-  loading.value = true
-
-  scrollToBottom()
-
+const startSocket = () => {
   initSocket(localStorage.getItem('token'), JSON.parse(localStorage.getItem('user')).id)
 
   onMessageCreated((data) => {
@@ -63,6 +60,15 @@ onMounted(async () => {
       scrollToBottom()
     })
   })
+}
+
+onMounted(async () => {
+
+  loading.value = true
+
+  scrollToBottom()
+
+  startSocket()
 
 })
 
@@ -74,6 +80,10 @@ watch(messages, () => {
     loading.value = true
   }
   scrollToBottom()
+})
+
+watch(selectedChatId, () => {
+  startSocket()
 })
 
 </script>

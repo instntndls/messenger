@@ -70,6 +70,7 @@ export function onUserWrote(callback) {
 
 export function notifyMessageCreated(userId, chatId, messageId) {
   sendMessage(TYPES.MESSAGE_CREATED, { user_id: userId, chat_id: chatId, message_id: messageId });
+  
 }
 
 export function notifyMessageChanged(userId, chatId, messageId) {
