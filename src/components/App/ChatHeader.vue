@@ -5,12 +5,14 @@ import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Label } from '@/components/ui/label'
 import MoreDropdown from '@/components/App/MoreDropdown.vue'
-import { inject, ref} from 'vue'
+import { inject, onMounted, ref, watch } from 'vue'
+import { AppConfig } from '@/config'
 
 const mobile = ref(inject('mobile'))
 const menuOpened = ref(inject('menuOpened'))
 
 const selectedChatName = inject('selectedChatName')
+const selectedChatAvatar = inject('selectedChatAvatar')
 </script>
 
 <template>
@@ -23,13 +25,13 @@ const selectedChatName = inject('selectedChatName')
         <AvatarFallback class="font-bold">
           {{ selectedChatName.charAt(0) }}
         </AvatarFallback>
+        <AvatarImage :src="`${AppConfig.fileAPI + '/images/' + selectedChatAvatar}`" />
       </Avatar>
 
       <div class="ContactData flex flex-col gap-0.5">
         <Label class="font-bold cursor-pointer">
           {{ selectedChatName }}
         </Label>
-        <Label class="text-neutral-500">hour ago</Label>
       </div>
     </div>
     <div class="ContactSettings">
@@ -49,14 +51,14 @@ const selectedChatName = inject('selectedChatName')
 @media screen and (min-width: 576px) {
   /*DESKTOP*/
   .Header {
-    @apply -mb-14 w-full h-14 bg-accent/80 border border-accent/50 backdrop-blur-md rounded-md flex flex-row items-center justify-between py-2 px-3;
+    @apply z-10 -mb-14 w-full h-14 bg-accent/80 border border-accent/50 backdrop-blur-md rounded-md flex flex-row items-center justify-between py-2 px-3;
   }
 }
 
 @media screen and (max-width: 576px) {
   /*MOBILE*/
   .Header {
-    @apply -mb-14 w-full h-16 bg-accent/80 border border-foreground/5 backdrop-blur-md rounded-md flex flex-row items-center justify-between py-2 px-3;
+    @apply z-10 -mb-14 w-full h-16 bg-accent/80 border border-foreground/5 backdrop-blur-md rounded-md flex flex-row items-center justify-between py-2 px-3;
   }
 }
 

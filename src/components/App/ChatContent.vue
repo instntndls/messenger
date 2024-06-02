@@ -96,9 +96,10 @@ watch(selectedChatId, () => {
       <div class="h-14" />
       <MessageCard
         v-for="message in messages"
+        :author-id="message.author_id"
         :key="message.id"
-        :name="'name'"
-        avatar-src=""
+        :name="message.author_first_name"
+        :avatar-src="message.author_avatar"
         image-src=""
         :message-text="message.text"
         :message-time="message.created_at"

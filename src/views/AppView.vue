@@ -24,7 +24,8 @@ import {
   notifyUserWrote
 } from '@/websocket'
 import { watch } from 'vue'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar'
+import { AppConfig } from '@/config'
 
 const menuOpened = ref(true)
 
@@ -34,6 +35,7 @@ const chats = ref()
 const messages = ref()
 const selectedChatId = ref()
 const selectedChatName = ref('')
+const selectedChatAvatar = ref('')
 
 const currentUser = ref()
 const seeCurrentUser = async () => {
@@ -81,7 +83,6 @@ onMounted(async () => {
   await checkAuth()
   await getChats()
   messages.value = await getAllChatMessages(selectedChatId.value)
-
 })
 
 watch(selectedChatId, async () => {
@@ -93,6 +94,7 @@ provide('menuOpened', menuOpened)
 provide('messages', messages)
 provide('selectedChatId', selectedChatId)
 provide('selectedChatName', selectedChatName)
+provide('selectedChatAvatar', selectedChatAvatar)
 </script>
 
 <template>
@@ -111,13 +113,15 @@ provide('selectedChatName', selectedChatName)
                 <Button :variant=" selectedChatId === chat.id ? 'secondary' : 'outline' " v-for="chat in chats" :key="chat.id"
                   class="w-full h-16 rounded-md my-4 p-4 flex gap-4 justify-start items-center cursor-pointer"
                   @click="mobile ? (menuOpened = !menuOpened) : null; selectedChatId = chat.id; messages = null;
-                  selectedChatName = chat.name ? chat.name : chat.second_user_first_name + ' ' + chat.second_user_last_name"
+                  selectedChatName = chat.name ? chat.name : chat.second_user_first_name + ' ' + chat.second_user_last_name;
+                  selectedChatAvatar = chat.second_user_avatar"
                 >
                   <Avatar>
                     <AvatarFallback class="font-bold">
                       <span v-if="chat.name">{{ chat.name.charAt(0) }}</span>
                       <span v-else>{{ chat.second_user_first_name.charAt(0) }}</span>
                     </AvatarFallback>
+                    <AvatarImage :src="AppConfig.fileAPI + '/images/' + chat.second_user_avatar" />
                   </Avatar>
 
                   <div class="h-full truncate text-ellipsis">
