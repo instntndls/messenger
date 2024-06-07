@@ -67,7 +67,6 @@ const logout = async () => {
 const getChats = async () => {
   await getAllChats()
     .then((response) => {
-      console.log(response)
       chats.value = response
     })
     .catch((error) => {
@@ -82,7 +81,6 @@ onMounted(async () => {
   })
   await checkAuth()
   await getChats()
-  messages.value = await getAllChatMessages(selectedChatId.value)
 })
 
 watch(selectedChatId, async () => {

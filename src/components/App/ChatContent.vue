@@ -35,8 +35,8 @@ const onSelectEmoji = (emoji) => {
 
 const scrollToBottom = () => {
   nextTick(() => {
-    const scrollArea = document.getElementById('ScrollArea')
-    scrollArea.scrollTop = scrollArea.scrollHeight
+    var scrollArea = document.getElementById('ScrollArea')
+    if (scrollArea) scrollArea.scrollTop = scrollArea?.scrollHeight
   })
 }
 
@@ -93,7 +93,7 @@ watch(selectedChatId, () => {
     <ChatHeader/>
     <LoadingScreen v-if="loading"/>
     <div v-else id="ScrollArea" class="Messages">
-      <div class="h-14" />
+      <div class="h-14"/>
       <MessageCard
         v-for="message in messages"
         :author-id="message.author_id"
@@ -104,6 +104,7 @@ watch(selectedChatId, () => {
         :message-text="message.text"
         :message-time="message.created_at"
         :status="message.status"
+        v-auto-animate
       />
     </div>
     <div class="TextInput z-50">

@@ -40,10 +40,11 @@ provide('checkAuth', checkAuth)
 </script>
 
 <template>
-  <Backdrop />
+
   <transition>
     <div v-if="smoothIn" class="Main">
-      <div class="Title flex flex-col items-center gap-8 h-[90%] justify-center">
+      <Backdrop />
+      <div class="Title absolute w-full h-[90%] z-10 flex flex-col items-center gap-8 justify-center">
         <h1 class="text-4xl text-white font-black leading-relaxed">Vue3 Messenger</h1>
         <div class="flex gap-3 h-8 items-center justify-center">
           <img class="size-8 rounded-md" src="@/components/icons/vueLogo.png" alt="vuelogo" />
@@ -68,7 +69,7 @@ provide('checkAuth', checkAuth)
           </Button>
         </login-dialog>
       </div>
-      <div class="Footer flex flex-col justify-center items-center h-[10%] bg-black bg-opacity-30 text-white">
+      <div class="Footer absolute w-full bottom-2 z-10 flex flex-col justify-center items-center h-[10%] bg-black bg-opacity-30 text-white">
         <div class="text-md opacity-80">
           Made with ❤️ by
           <HoverCard>
@@ -110,7 +111,7 @@ provide('checkAuth', checkAuth)
 
 <style scoped>
 .Main {
-  @apply absolute top-0 left-0 z-10 w-screen h-dvh;
+  @apply absolute top-0 left-0 z-10 w-dvw h-dvh;
 }
 
 .v-enter-active,

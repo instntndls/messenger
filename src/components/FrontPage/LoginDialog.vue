@@ -55,6 +55,10 @@ const login = async () => {
 
 }
 
+const register = () => {
+  window.location.href = 'https://usparq.com/auth/register'
+}
+
 
 
 const validateEmail = (text) => {
@@ -117,8 +121,8 @@ const validateEmail = (text) => {
           <Label> Forgot your username or password? </Label>
           <Label class="flex gap-1">
             New here?
-            <router-link class="text-blue-500 cursor-pointer hover:underline" to="signup"
-              >Sign Up</router-link
+            <span class="text-blue-500 cursor-pointer hover:underline" @click="register">
+              Sign Up</span
             >
           </Label>
         </CardFooter>

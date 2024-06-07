@@ -17,21 +17,23 @@ const selectedChatAvatar = inject('selectedChatAvatar')
 
 <template>
   <header class="Header">
-    <div class="ContactInfo flex flex-row gap-3 items-center">
+    <div class="ContactInfo flex flex-row gap-1 items-center">
       <Button v-if="mobile" variant="ghost" class="size-10 p-0" @click="menuOpened = !menuOpened">
-        <ChevronLeft v-if="!menuOpened" class="size-1/2 hover:scale-110 transition" />
+        <ChevronLeft v-if="!menuOpened" class="size-6 hover:scale-110 transition" />
       </Button>
-      <Avatar>
-        <AvatarFallback class="font-bold">
-          {{ selectedChatName.charAt(0) }}
-        </AvatarFallback>
-        <AvatarImage :src="`${AppConfig.fileAPI + '/images/' + selectedChatAvatar}`" />
-      </Avatar>
+      <div class="flex gap-3 items-center">
+        <Avatar>
+          <AvatarFallback class="font-bold">
+            {{ selectedChatName.charAt(0) }}
+          </AvatarFallback>
+          <AvatarImage :src="`${AppConfig.fileAPI + '/images/' + selectedChatAvatar}`" />
+        </Avatar>
 
-      <div class="ContactData flex flex-col gap-0.5">
-        <Label class="font-bold cursor-pointer">
-          {{ selectedChatName }}
-        </Label>
+        <div class="ContactData flex flex-col gap-0.5">
+          <Label class="w-min line-clamp-1 font-bold cursor-pointer truncate text-ellipsis">
+            {{ selectedChatName }}
+          </Label>
+        </div>
       </div>
     </div>
     <div class="ContactSettings">
@@ -58,7 +60,7 @@ const selectedChatAvatar = inject('selectedChatAvatar')
 @media screen and (max-width: 576px) {
   /*MOBILE*/
   .Header {
-    @apply z-10 -mb-14 w-full h-16 bg-accent/80 border border-foreground/5 backdrop-blur-md rounded-md flex flex-row items-center justify-between py-2 px-3;
+    @apply z-10 -mb-14 w-full h-16 bg-accent/80 border border-foreground/5 backdrop-blur-md rounded-md flex flex-row items-center justify-between py-2 px-1;
   }
 }
 

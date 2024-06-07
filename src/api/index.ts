@@ -66,7 +66,7 @@ async function getAllChats () {
 
 async function getAllChatMessages (chatId: number) {
   const response = await axios.get(
-    `${AppConfig.baseAPI}/chat/message/all?chat_id=106`, {
+    `${AppConfig.baseAPI}/chat/message/all`, {
       params: {
         chat_id: chatId
       },

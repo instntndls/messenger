@@ -23,7 +23,7 @@ const formatDateTime = (date) => {
   return `${hours}:${minutes}`
 }
 
-const nameFallback = ref('UN')
+const nameFallback = props.name?.charAt(0)
 
 onMounted(() => {
   isMyMessage.value = props.authorId === JSON.parse(localStorage.getItem('user')).id
@@ -33,16 +33,16 @@ onMounted(() => {
 <template>
   <div v-if="status !== 'NOTIFICATION'" class="w-full flex">
     <div v-if="isMyMessage" class="Pusher"/>
-    <div id="Main" class="Main" :class="isMyMessage ? 'flex-row-reverse' : 'flex-row'">
+    <div id="Main" class="Main" :class="isMyMessage ? 'flex-row-reverse xl:flex-row' : 'flex-row'">
       <Avatar class="size-8">
         <AvatarImage :src="AppConfig.fileAPI + '/images/' + avatarSrc" class="blur-[0.5px]"/>
         <AvatarFallback>{{ nameFallback }}</AvatarFallback>
       </Avatar>
       <div class="Message">
         <img :src="imageSrc" :class="imageSrc !== '' ? 'MessageImage' : 'hidden'" alt="" />
-        <p class="text-primary/90 text-sm font-light break-all">{{ messageText }}</p>
+        <p class="text-primary text-sm break-words">{{ messageText }}</p>
         <div class="MessageTime">
-          <div class="w-full"></div>
+          <span class="w-full"></span>
           {{ formatDateTime(messageTime) }}
         </div>
       </div>
@@ -50,8 +50,13 @@ onMounted(() => {
   </div>
 
   <Card v-else class="mx-auto w-fit p-2 my-4 bg-foreground/90">
-    <p v-if="JSON.parse(messageText).type === 1" class="Notification"> Chat created </p>
-    <p v-else class="Notification">{{ JSON.parse(messageText).user.first_name + ' ' + JSON.parse(messageText).user.last_name + ' joined the chat' }}</p>
+    <div v-if="JSON.parse(messageText).type === 1" class="Notification"> Chat created </div>
+    <div v-else class="Notification">
+      <span class="font-bold">
+        {{ JSON.parse(messageText).user.first_name + ' ' + JSON.parse(messageText).user.last_name }}
+      </span>
+      joined the chat
+    </div>
   </Card>
 </template>
 
@@ -60,10 +65,10 @@ onMounted(() => {
   @apply flex gap-2 mx-2 my-4;
 }
 .Message {
-  @apply h-min px-2 py-1 min-w-24 rounded-sm max-w-64 bg-accent/50;
+  @apply h-min px-2 py-1 min-w-24 rounded-sm max-w-64 bg-accent;
 }
 .Pusher {
-  @apply w-full
+  @apply w-full xl:w-0
 }
 .MessageImage {
   @apply min-w-24 min-h-24 max-w-48 max-h-48 rounded-md p-[1px] mb-3;
@@ -73,5 +78,8 @@ onMounted(() => {
 }
 .Notification {
   @apply text-background font-medium text-sm break-all;
+}
+.Name {
+  @apply font-bold text-accent-foreground text-sm;
 }
 </style>
