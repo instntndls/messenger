@@ -1,8 +1,11 @@
 # Vue3-Messenger
 
-This template should help get you started developing with Vue 3 in Vite.
-![alt text](https://raw.githubusercontent.com/instntndls/messenger/master/src/assets/screenshots/localhost_5173_messenger_.png)
+Vue3 Messenger is a simple and open-source messaging application built with Vue.js 3. 
+This project aims to provide a basic yet effective platform for real-time communication.
+Based on USparq API.
 ![alt text](https://raw.githubusercontent.com/instntndls/messenger/master/src/assets/screenshots/localhost_5173_messenger_app.png)
+![alt text](https://raw.githubusercontent.com/instntndls/messenger/master/src/assets/screenshots/localhost_5173_messenger_.png)
+![alt text](https://raw.githubusercontent.com/instntndls/messenger/master/src/assets/screenshots/localhost_5173_messenger_%20(1).png)
 
 
 ## Recommended IDE Setup
