@@ -1,7 +1,7 @@
 # Vue3-Messenger
 
 Vue3 Messenger is a simple and open-source messaging application built with Vue.js 3. 
-This project aims to provide a basic yet effective platform for real-time communication.
+This project aims to provide a basic yet effective platform for real-time communication. 💬
 
 Based on USparq API.
 
