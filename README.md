@@ -5,9 +5,10 @@ This project aims to provide a basic yet effective platform for real-time commun
 
 Based on USparq API.
 
-![alt text](https://raw.githubusercontent.com/instntndls/messenger/master/src/assets/screenshots/localhost_5173_messenger_app.png)
-![alt text](https://raw.githubusercontent.com/instntndls/messenger/master/src/assets/screenshots/localhost_5173_messenger_.png)
-![alt text](https://raw.githubusercontent.com/instntndls/messenger/master/src/assets/screenshots/localhost_5173_messenger_%20(1).png)
+|![alt text](https://raw.githubusercontent.com/instntndls/messenger/master/src/assets/screenshots/localhost_5173_messenger_.png)|![alt text](https://raw.githubusercontent.com/instntndls/messenger/master/src/assets/screenshots/localhost_5173_messenger_app.png)|
+|-|-|
+
+
 
 
 ## Recommended IDE Setup
